@@ -1,0 +1,121 @@
+# Agent 项目配置文件示例
+# 复制此文件为 config.yaml 并根据实际情况修改
+
+# ==================== 应用配置 ====================
+app:
+  name: "Agent"
+  version: "0.1.0"
+  host: "0.0.0.0"
+  port: 8000
+  debug: true
+
+# ==================== 数据库配置 ====================
+database:
+  mysql:
+    host: "${MYSQL_HOST}"  # 从环境变量读取
+    port: 3306
+    user: "${MYSQL_USER}"
+    password: "${MYSQL_PASSWORD}"
+    database: "${MYSQL_DATABASE}"
+    pool_size: 10
+    pool_recycle: 3600  # 连接回收时间（秒）
+    echo: false  # 是否打印 SQL（开发时可设为 true）
+  
+  # Chroma 向量数据库（后续启用）
+  chroma:
+    persist_directory: "./chroma_db"
+    collection_name: "agent_knowledge"
+
+# ==================== LLM 配置 ====================
+llm:
+  default_provider: "deepseek"  # deepseek | ollama | qianfan | tongyi
+  
+  providers:
+    # DeepSeek API
+    deepseek:
+      api_key: "${DEEPSEEK_API_KEY}"
+      base_url: "${DEEPSEEK_BASE_URL}"
+      model: "deepseek-chat"
+      temperature: 0.7
+      max_tokens: 4096
+      timeout: 60  # 超时时间（秒）
+    
+    # Ollama 本地模型
+    ollama:
+      base_url: "${OLLAMA_BASE_URL}"
+      model: "deepseek-r1:7b"
+      temperature: 0.7
+      timeout: 120
+    
+    # 百度千帆
+    qianfan:
+      api_key: "${QIANFAN_API_KEY}"
+      secret_key: "${QIANFAN_SECRET_KEY}"
+      model: "ERNIE-Bot-4"
+      temperature: 0.7
+    
+    # 阿里通义千问
+    tongyi:
+      api_key: "${TONGYI_API_KEY}"
+      model: "qwen-plus"
+      temperature: 0.7
+
+# ==================== 记忆管理配置 ====================
+memory:
+  max_recent_messages: 20      # 保留最近多少条消息
+  compression_threshold: 50    # 超过多少条触发压缩
+  summary_interval: 10         # 每多少条生成一次摘要
+
+# ==================== 工具配置 ====================
+tools:
+  # PowerShell 安全等级
+  powershell:
+    security_level: 1  # 0=禁用, 1=只读, 2=文件操作, 3=完全权限
+    timeout: 30        # 执行超时（秒）
+    
+  # 数据库工具
+  database:
+    max_rows: 1000     # 最多返回行数
+    timeout: 10
+  
+  # 文件工具
+  file:
+    max_size: 10485760  # 最大文件大小 10MB
+    allowed_extensions:
+      - ".txt"
+      - ".md"
+      - ".json"
+      - ".yaml"
+      - ".py"
+  
+  # 通用配置
+  retry:
+    max_attempts: 3    # 最大重试次数
+    delay: 1           # 重试延迟（秒）
+
+# ==================== 文件上传配置 ====================
+upload:
+  max_size: 52428800   # 50MB
+  allowed_types:
+    - "image/jpeg"
+    - "image/png"
+    - "image/gif"
+    - "application/pdf"
+    - "text/plain"
+    - "application/msword"
+    - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  storage_path: "./uploads"
+
+# ==================== 日志配置 ====================
+logging:
+  level: "INFO"        # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  format: "detailed"   # simple | detailed
+  file:
+    enabled: true
+    path: "./logs"
+    max_size: 10485760  # 10MB
+    backup_count: 5
+  console:
+    enabled: true
+    colorize: true
+

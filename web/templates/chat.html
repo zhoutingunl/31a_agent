@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent - 智能对话助手</title>
+    <link rel="stylesheet" href="/static/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🤖 Agent 智能对话助手</h1>
+            <div class="status">
+                <span id="status-indicator" class="status-dot"></span>
+                <span id="status-text">正在连接...</span>
+            </div>
+        </div>
+
+        <!-- 侧边栏 - 会话列表 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>对话列表</h3>
+                <button id="new-conversation-btn" class="btn-new">+ 新对话</button>
+            </div>
+            <div id="conversation-list" class="conversation-list">
+                <!-- 动态加载会话列表 -->
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 消息显示区 -->
+            <div id="messages-container" class="messages-container">
+                <div class="welcome-message">
+                    <h2>👋 欢迎使用 Agent</h2>
+                    <p>我是一个基于 LangChain 和 DeepSeek 的智能助手。</p>
+                    <p>你可以问我任何问题，或者点击"新对话"开始聊天。</p>
+                </div>
+            </div>
+
+            <!-- 输入区 -->
+            <div class="input-container">
+                <textarea 
+                    id="message-input" 
+                    class="message-input" 
+                    placeholder="输入消息... (Ctrl+Enter 发送)"
+                    rows="3"
+                ></textarea>
+                <div class="input-actions">
+                    <label class="stream-toggle">
+                        <input type="checkbox" id="stream-mode" checked>
+                        <span>流式输出</span>
+                    </label>
+                    <button id="send-btn" class="btn-send" disabled>发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,37 @@
+# 通用助手角色配置
+
+name: "通用助手"
+type: "general"
+description: "智能通用助手，支持完整记忆和推理能力"
+
+# 系统提示词（兼容性字段，实际从prompts/general_system.txt加载）
+system_prompt: ""
+
+# 工具权限配置
+allowed_tools:
+  - "*"  # 允许使用所有工具
+
+# 记忆策略配置
+memory_strategy:
+  short_term: true           # 启用短期记忆（会话级）
+  long_term: true            # 启用长期记忆（跨会话）
+  knowledge_graph: true      # 启用知识图谱
+  user_isolated: true        # 用户隔离（每个用户独立记忆）
+  rag_enabled: false         # 不需要RAG知识库
+  retention_days: 90         # 记忆保留90天
+
+# 模型配置（可选，如果不配置则使用全局配置）
+model_config:
+  provider: "deepseek"
+  model: "deepseek-chat"
+  temperature: 0.7
+  max_tokens: 4096
+
+# 提示词配置（可选，如果不配置则从文件加载）
+prompt_config:
+  # 提示词将从 config/prompts/general_*.txt 文件自动加载
+  # 包括：system, planner, reflection, memory, knowledge, tools, router
+
+# 安全配置
+security_config:
+  powershell_mode: "restricted"  # 限制危险命令

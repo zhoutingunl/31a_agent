@@ -1,0 +1,35 @@
+# FAISS GPU配置示例
+# 如果您的环境支持CUDA，可以使用此配置
+
+vector_store:
+  # FAISS配置
+  persist_dir: "./data/vectors/memory"
+  save_interval: 100
+  index_type: "IVFFlat"  # GPU版本推荐使用IVFFlat
+  
+  # GPU配置
+  use_gpu: true
+  gpu_id: 0  # 使用第一个GPU
+  gpu_memory_fraction: 0.8  # 使用80%的GPU内存
+  
+  # 性能优化
+  nlist: 1000  # GPU版本可以使用更大的nlist
+  nprobe: 10   # 搜索时的探测数量
+
+embedding:
+  # 向量化模型配置
+  model_name: "paraphrase-multilingual-MiniLM-L12-v2"
+  cache_dir: "./data/cache/embeddings"
+  dimension: 384
+  
+  # GPU加速（如果模型支持）
+  use_gpu: false  # SentenceTransformer默认使用CPU
+
+# 安装GPU版本的命令：
+# pip uninstall faiss-cpu
+# pip install faiss-gpu
+# 
+# 或者使用conda：
+# conda install -c conda-forge faiss-gpu
+#
+# 注意：需要先安装CUDA环境

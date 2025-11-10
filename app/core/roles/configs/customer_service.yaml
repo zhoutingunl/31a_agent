@@ -1,0 +1,38 @@
+# 电商客服角色配置
+
+name: "电商客服"
+type: "customer_service"
+description: "电商客服助手，处理订单、商品咨询等"
+
+# 系统提示词（兼容性字段，实际从prompts/customer_service_system.txt加载）
+system_prompt: ""
+
+# 工具权限配置
+allowed_tools:
+  - "web_search"     # 允许搜索商品信息
+  # 不允许使用文件操作、代码执行等敏感工具
+
+# 记忆策略配置
+memory_strategy:
+  short_term: true           # 启用短期记忆（仅当前会话）
+  long_term: false           # 禁用长期记忆（多用户共享场景）
+  knowledge_graph: false     # 禁用知识图谱
+  user_isolated: false       # 不做用户隔离
+  rag_enabled: true          # 预留RAG知识库（用于商品/政策文档检索）
+  retention_days: 1          # 会话记忆仅保留1天
+
+# 模型配置（客服需要更稳定的输出）
+model_config:
+  provider: "deepseek"
+  model: "deepseek-chat"
+  temperature: 0.3  # 客服需要更稳定的输出
+  max_tokens: 2048
+
+# 提示词配置（可选，如果不配置则从文件加载）
+prompt_config:
+  # 提示词将从 config/prompts/customer_service_*.txt 文件自动加载
+  # 包括：system, planner, reflection, memory, knowledge, tools, router
+
+# 安全配置
+security_config:
+  powershell_whitelist: []  # 空白名单，客服不允许执行任何 PowerShell 命令
