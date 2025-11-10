@@ -9,11 +9,17 @@ import subprocess
 import time
 from pathlib import Path
 
-# 设置 Windows 控制台编码为 UTF-8
+# 设置控制台编码为 UTF-8
 if sys.platform == 'win32':
+    # Windows 控制台编码设置
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+elif sys.platform == 'darwin':
+    # macOS 通常已经使用 UTF-8，但确保环境变量设置正确
+    import os
+    os.environ.setdefault('LANG', 'en_US.UTF-8')
+    os.environ.setdefault('LC_ALL', 'en_US.UTF-8')
 
 # 添加项目根目录到路径
 project_root = Path(__file__).parent.parent
@@ -36,7 +42,7 @@ def kill_processes_by_name(process_name):
             else:
                 print(f"没有找到 {process_name} 进程")
         else:
-            # Linux/Mac 系统
+            # Linux/macOS 系统
             result = subprocess.run(
                 ['pkill', '-f', process_name],
                 capture_output=True,
@@ -83,13 +89,13 @@ def kill_processes_by_port(port):
                 if not pids:
                     print(f"没有找到占用端口 {port} 的进程")
         else:
-            # Linux/Mac 系统
+            # Linux/macOS 系统
             result = subprocess.run(
                 ['lsof', '-ti', f':{port}'],
                 capture_output=True,
                 text=True
             )
-            
+
             if result.returncode == 0 and result.stdout.strip():
                 pids = result.stdout.strip().split('\n')
                 for pid in pids:
@@ -121,7 +127,15 @@ def main():
     
     # 2. 终止所有 Python 进程（更彻底）
     print("\n2. 清理 Python 进程:")
-    kill_processes_by_name("python.exe" if sys.platform == 'win32' else "python")
+    if sys.platform == 'win32':
+        kill_processes_by_name("python.exe")
+    elif sys.platform == 'darwin':
+        # macOS 上可能有多种 Python 可执行文件名
+        kill_processes_by_name("python")
+        kill_processes_by_name("python3")
+    else:
+        # Linux
+        kill_processes_by_name("python")
     
     # 3. 等待一下让进程完全终止
     print("\n3. 等待进程完全终止...")

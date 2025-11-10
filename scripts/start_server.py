@@ -11,11 +11,17 @@ import subprocess
 import time
 from pathlib import Path
 
-# 设置 Windows 控制台编码为 UTF-8
+# 设置控制台编码为 UTF-8
 if sys.platform == 'win32':
+    # Windows 控制台编码设置
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+elif sys.platform == 'darwin':
+    # macOS 通常已经使用 UTF-8，但确保环境变量设置正确
+    import os
+    os.environ.setdefault('LANG', 'en_US.UTF-8')
+    os.environ.setdefault('LC_ALL', 'en_US.UTF-8')
 
 # 添加项目根目录到路径
 project_root = Path(__file__).parent.parent
