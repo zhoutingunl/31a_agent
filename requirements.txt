@@ -53,3 +53,14 @@ tenacity>=8.2.3  # 重试库
 # pydub>=0.25.1
 # pyaudio>=0.2.11
 
+# ==================== 平台特定依赖 ====================
+# Windows 特定依赖（仅在 Windows 上安装）
+# pywin32>=306; platform_system=="Windows"  # Windows API 访问
+
+# macOS 特定依赖（如需要系统集成）
+# pyobjc-framework-Cocoa>=9.0; platform_system=="Darwin"  # macOS 系统集成
+# pyobjc-framework-ApplicationServices>=9.0; platform_system=="Darwin"  # 应用程序服务
+
+# Linux 特定依赖（如需要系统集成）
+# python3-xlib>=0.33; platform_system=="Linux"  # X Window 系统集成
+
